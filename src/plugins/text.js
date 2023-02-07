@@ -1,12 +1,45 @@
- const test = {
-    arr: "expample",
+const text = {
+    main: {
+        title: "Тест бла бла",
+        subtitle: "",
+        text: "Для современного мира базовый вектор развития однозначно фиксирует необходимость кластеризации усилий. Как принято считать, элементы политического процесса, вне зависимости от их уровня, должны быть своевременно верифицированы. Равным образом, высокое качество позиционных исследований требует от нас анализа вывода текущих активов."
+    },
     answer: {
-        text: "sdsd",
-        q: { text: "aaaa", isTrue: false },
-        q2: { text: "aaaa", isTrue: false },
-        q3: { text: "aaaa", isTrue: false },
-        q4: { text: "aaaa", isTrue: true },
+
     }
 }
 
-export default test
+const questions = [
+    {
+        text: "Помыть раму",
+        type: "radio",
+        answer: null,
+        rightAnser:0,
+        options: [
+            { text: "1+1= 2" },
+            { text: "1+1d=2" },
+            { text: "1+1=2" },
+            { text: "1+s1=2" },
+        ]
+    },
+    {
+        text: "Помыть kaaaaaaaaaaaaak",
+        type: "checkbox",
+        answer: [],
+        rightAnser:0,
+        options: [
+            { text: "1+1 =2" },
+            { text: "1+1d= 2" },
+            { text: "1+1= 2" },
+            { text: "1+s1= 2" },
+        ]
+    },
+    {
+        text: "Наломать дров",
+        type: "text",
+        answer: "",
+        rightAnser:0,
+    }
+]
+
+export { text, questions };

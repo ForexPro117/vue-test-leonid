@@ -15,7 +15,10 @@ const menuItems = [
     },
     {
         action: 'mdi-school',
-        items: [{ title: 'List Item' }],
+        items: [
+            { title: 'List Item' },
+            { title: 'List Item2' }
+        ],
         title: 'Education',
     },
     {

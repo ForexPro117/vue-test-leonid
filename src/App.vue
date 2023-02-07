@@ -12,17 +12,18 @@ v-app
     v-divider
     v-list(dense nav)
 
-
-      //- v-list-item-group( v-model="selectedItem" color="primary")
-      //-   v-list-item( v-for="(item, i) in items" :key="i")
-      //-     v-list-item-content
-      //-       v-list-item-title(v-text="item")
-
-      v-list-group(v-for="item in menuItems" no-action :key="item.title" :prepend-icon="item.action")
-        template( v-slot:activator)
-            v-list-item-content
-              v-list-item-title {{item.title}}
-        v-list-item-group( v-model="selectedItem" color="primary")        
+      v-list-item-group( v-model="selectedItem" color="primary")  
+        v-list-item(link @click="setTitle('Home')")
+          v-list-item-icon
+            v-icon mdi-home  
+          v-list-item-content  
+            v-list-item-title Home
+          
+        v-list-group(v-for="item in menuItems" no-action :key="item.title" :prepend-icon="item.action")
+          template( v-slot:activator)
+              v-list-item-content
+                v-list-item-title {{item.title}}
+              
           v-list-item( v-for="(item, i) in item.items" :key="i" link @click="setTitle(item.title)")
               v-list-item-title(v-text="item.title")     
 
@@ -39,31 +40,28 @@ v-app
   v-main
     <!-- Provides the application the proper gutter -->
     v-container(fluid)
-      span aaaa
-      span {{selectedItem}}
-      router-view 
+      CardView( :questions="title")
 
   v-footer(app)
 </template>
 
 <script>
-import test from "./plugins/text";
-import  menuItems from "./plugins/menu";
+import menuItems from "./plugins/menu";
+import CardView from "./components/CardView"
 export default {
   name: "App",
   
+  components: {
+    CardView,
+  },
+
+
   data: () => ({
-    arr: test.arr,
-    items:["aaa","sasas"],
     selectedItem:0,
-    drawer:true,
-    tests:["Test1","Test2"],
+    drawer:null,
     menuItems: menuItems,
     title:""
   }),
-  mounted() {
-    //  console.log(arr);
-  },
   methods:{
     setTitle(title){
       this.title = title
