@@ -14,7 +14,7 @@ const questions = [
         text: "Помыть раму",
         type: "radio",
         answer: null,
-        rightAnser:0,
+        rightAnswer:2,
         options: [
             { text: "1+1= 2" },
             { text: "1+1d=2" },
@@ -26,7 +26,7 @@ const questions = [
         text: "Помыть kaaaaaaaaaaaaak",
         type: "checkbox",
         answer: [],
-        rightAnser:0,
+        rightAnswer:[0,1,2],
         options: [
             { text: "1+1 =2" },
             { text: "1+1d= 2" },
@@ -38,7 +38,7 @@ const questions = [
         text: "Наломать дров",
         type: "text",
         answer: "",
-        rightAnser:0,
+        rightAnswer:"hne",
     }
 ]
 
