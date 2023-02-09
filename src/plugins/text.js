@@ -27,7 +27,8 @@ export default {
                 Ученик вычеркнул из списка название одного из животных. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд.
                 При этом размер нового предложения в данной кодировке оказался на 22 байта меньше, чем размер исходного предложения. Напишите в ответе вычеркнутое название животного.`,
                 show: false,
-                checkAnsver: false,
+                checkAnswer: false,
+                userText:"",
                 options: [
                     { text: "1+1= 2" },
                     { text: "1+1d=2" },
@@ -42,7 +43,8 @@ export default {
                 rightAnswer: [0, 1, 2],
                 explanation: "",
                 show: false,
-                checkAnsver: false,
+                userText:"",
+                checkAnswer: false,
                 options: [
                     { text: "1+1 =2" },
                     { text: "1+1d= 2" },
@@ -56,8 +58,9 @@ export default {
                 answer: "",
                 rightAnswer: "hne",
                 explanation: "",
+                userText:"",
                 show: false,
-                checkAnsver: false,
+                checkAnswer: false,
             }
         ]
     },
@@ -84,12 +87,13 @@ export default {
                 image: ["/img/a.png"],
                 answer: null,
                 rightAnswer: 2,
+                userText:"",
                 explanation: `В одной из кодировок UTF-16 каждый символ кодируется 16 битами. Гриша написал текст (в нём нет лишних пробелов):
                 «Лось, хомяк, косуля, кенгуру, капибара, бинтуронг, гиппопотам — животные».
                 Ученик вычеркнул из списка название одного из животных. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд.
                 При этом размер нового предложения в данной кодировке оказался на 22 байта меньше, чем размер исходного предложения. Напишите в ответе вычеркнутое название животного.`,
                 show: false,
-                checkAnsver: false,
+                checkAnswer: false,
                 options: [
                     { text: "1+1= 2" },
                     { text: "1+1d=2" },
@@ -103,8 +107,9 @@ export default {
                 answer: [],
                 rightAnswer: [0, 1, 2],
                 explanation: "",
+                userText:"",
                 show: false,
-                checkAnsver: false,
+                checkAnswer: false,
                 options: [
                     { text: "1+1 =2" },
                     { text: "1+1d= 2" },
@@ -116,10 +121,11 @@ export default {
                 text: "Наломать дров",
                 type: "text",
                 answer: "",
+                userText:"",
                 rightAnswer: "hne",
                 explanation: "",
                 show: false,
-                checkAnsver: false,
+                checkAnswer: false,
             }
         ]
     },

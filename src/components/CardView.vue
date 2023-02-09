@@ -11,18 +11,20 @@
         v-card-subtitle {{q.text}}
         v-img(v-for="path in q.image" :src="path" contain :key="path")
         v-card-text(v-if="q.type == 'radio'")
-          v-radio-group(v-model="q.answer" :disabled="isFinish")
+          v-radio-group(v-model="q.answer" :disabled="q.checkAnswer")
             v-radio(v-for="(option,i) in q.options" :key="option.text" :label="option.text" :value="i" dense)
             
         v-card-text(v-else-if="q.type == 'checkbox'")
-          v-checkbox.my-0(v-for="(option,i) in q.options" :key="option.text" :label="option.text" :value="i" v-model="q.answer" dense :disabled="isFinish")
+          v-checkbox.my-0(v-for="(option,i) in q.options" :key="option.text" :label="option.text" :value="i" v-model="q.answer" dense :disabled="q.checkAnswer")
 
         v-card-text(v-else-if="q.type == 'text'")
-          v-text-field(:label="'Введите ответ'" v-model="q.answer"  clearable :disabled="isFinish")
+          v-text-field(:label="'Введите ответ'" v-model="q.answer"  clearable :disabled="q.checkAnswer")
         v-card-actions
-          v-btn(text @click="q.show = !q.show" color="primary") Показать решение
+          v-btn(text @click="checkTest(q)"  color="primary" :disabled="q.checkAnswer") Проверить
+          div.ml-5(v-html="q.userText")
           v-spacer
-          v-btn(text  color="primary") Ответить на вопрос
+          v-btn(v-if="q.checkAnswer" text @click="q.show = !q.show" color="primary") Показать решение
+          
         v-expand-transition
           div(v-show="q.show")
             v-divider
@@ -55,25 +57,40 @@ export default {
       this.test = _.cloneDeep(tests[this.title])
       // this.test.questions = _.shuffle(this.test.questions)
     },
-    checkTest(){
-      this.tableItems=[]
-      let i = 1;
-      for (let el of this.test.questions) {
-        let ans = false;
-        switch (el.type) {
-          case "checkbox":
-            ans = this.compareArr(el.answer, el.rightAnswer)
-            break;
-          case "radio":
-            ans = el.answer == el.rightAnswer
-            break;
-          case "text":
-            ans = this.compareText(el.answer, el.rightAnswer)
-            break;
-        }
-        this.tableItems.push({name:'Задание '+i++,result:ans ? "Верно":"Неверный ответ"})
+    checkTest(el){
+      let ans = false
+      switch (el.type) {
+        case "checkbox":
+          ans = this.compareArr(el.answer, el.rightAnswer)
+          break;
+        case "radio":
+          ans = el.answer == el.rightAnswer
+          break;
+        case "text":
+          ans = this.compareText(el.answer, el.rightAnswer)
+          break;
       }
-      this.isFinish = true
+      el.checkAnswer = true
+      if(ans)
+        el.userText = "<div style='color:green'>Ответ верный!</div>"
+      else  
+        el.userText  = "<span style='color:red'>Неправильный ответ!</span>   Верный ответ: "+this.answerToString(el)
+      
+    },
+    answerToString(el){
+      let ans = null
+      switch (el.type) {
+        case "checkbox":
+          ans = el.rightAnswer.map((num)=>num+1)
+          break;
+        case "radio":
+          ans = (el.rightAnswer+1) 
+          break;
+        case "text":
+          ans = el.rightAnswer
+          break;
+      }
+      return ans.toString()
     },
      compareArr(arr,arr2){
       return arr.length == arr2.length &&  !_.difference(arr,arr2).length 
@@ -86,8 +103,6 @@ export default {
     title(){
       console.log("Changed")
       this.randomQuest()
-      this.tableItems=[]
-      this.isFinish = false
     }
   }
 };

@@ -20,6 +20,7 @@
         v-card-text(v-else-if="q.type == 'text'")
           v-text-field(:label="'Введите ответ'" v-model="q.answer"  clearable :disabled="isFinish")
         v-card-actions
+          v-spacer
           v-btn(v-if="isFinish" text @click="q.show = !q.show" color="primary") Показать решение
         v-expand-transition
           div(v-show="q.show")
@@ -67,6 +68,7 @@ export default {
   },
   methods:{
     randomQuest(){
+      this.test.questions = []
       let test = _.cloneDeep(tests)
       let arr = []
       for(let name of Object.keys(test)){
@@ -99,14 +101,17 @@ export default {
     },
     compareText(text,text2){
       return text.toLowerCase().includes(text2.toLowerCase())
+    },
+    refresh(){
+      this.randomQuest()
+      this.tableItems=[]
+      this.isFinish = false
     }
   },
   watch:{
     title(){
       console.log("Changed")
-      this.randomQuest()
-      this.tableItems=[]
-      this.isFinish = false
+      this.refresh()
     }
   }
 };

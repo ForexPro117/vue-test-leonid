@@ -39,7 +39,7 @@ v-app
           v-card-title Главная страница
           v-card-subtitle Тут вы можете расписать всякое
           v-card-text тут просто текст   
-      TestView(v-else-if="main == 'test'" :title="title")    
+      TestView(v-else-if="main == 'test'" :title="title" ref="test")    
       CardView(v-else :title="title")
       
 
@@ -66,28 +66,31 @@ export default {
     title: "",
   }),
   methods: {
-    setTitle(title,name) {
+    setTitle(title, name) {
       switch (title) {
         case "main":
           this.main = "main"
           this.title = ""
-          break;
+          break
         case "test":
-          this.main = "test"
-          this.title = name
-          console.log(123131);
-          break;
+          if (this.main == "test") this.$refs.test.refresh()
+          else {
+            this.main = "test"
+            this.title = name
+          }
+
+          break
         case "text":
           this.main = "text"
           this.title = name
-          break;
+          break
       }
     },
   },
-};
+}
 </script>
 <style scoped>
 .card {
-  width: 700px;
+  width: 700px
 }
 </style>
