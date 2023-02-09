@@ -1,11 +1,11 @@
 <template lang="pug">
   div
-    v-card.mx-auto.card.mt-10(v-for="(card,j) in test.main" :key="j" elevation="2")
-        v-card-title {{card.title}}
-        v-card-subtitle {{card.subtitle}}
-        v-card-text {{card.text}}
-        v-img(:src="card.image" contain)
-    v-lazy(v-for="(q,i) in this.test.questions", :key="q.text" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
+    //- v-card.mx-auto.card.mt-10(v-for="(card,j) in test.main" :key="j" elevation="2")
+    //-     v-card-title {{card.title}}
+    //-     v-card-subtitle {{card.subtitle}}
+    //-     v-card-text {{card.text}}
+    //-     v-img(:src="card.image" contain)
+    v-lazy(v-for="(q,i) in this.test.questions", :key="i" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
       v-card.mx-auto.card.mt-10(elevation="2")
         v-card-title Задание №{{i+1}}
         v-card-subtitle {{q.text}}
@@ -20,14 +20,15 @@
         v-card-text(v-else-if="q.type == 'text'")
           v-text-field(:label="'Введите ответ'" v-model="q.answer"  clearable :disabled="isFinish")
         v-card-actions
-          v-btn(text @click="q.show = !q.show" color="primary") Показать решение
-          v-spacer
-          v-btn(text  color="primary") Ответить на вопрос
+          v-btn(v-if="isFinish" text @click="q.show = !q.show" color="primary") Показать решение
         v-expand-transition
           div(v-show="q.show")
             v-divider
             v-card-text {{q.explanation}}
-  
+    v-row.mt-16.mb-10(v-if="!isFinish" align="center")
+      v-btn.btn.mx-auto(@click="checkTest" color="primary" ) Завершить тест    
+    v-data-table.mt-16.mb-10.mx-auto.elevation-2.card(v-else="isFinish" :headers='headers' :items='tableItems'
+     :items-per-page="5" :footer-props="{itemsPerPageText: 'Элементов на странице', pageText: '{0}-{1} из {2}','items-per-page-all-text':'Все'}")  
           
    
 
@@ -44,7 +45,21 @@ export default {
   },
 
   data: () => ({
-    test:null,
+    test:{questions:[],},
+    tableItems:[],
+    isFinish:false,
+    headers:[
+      {
+      text:'Номер теста',
+      sortable: false,
+      value:"name",
+    },
+    {
+      text:'Результат',
+      sortable: false,
+      value:"result"
+    }
+    ]
   }),
   created(){
     console.log("Created")
@@ -52,8 +67,12 @@ export default {
   },
   methods:{
     randomQuest(){
-      this.test = _.cloneDeep(tests[this.title])
-      // this.test.questions = _.shuffle(this.test.questions)
+      let test = _.cloneDeep(tests)
+      let arr = []
+      for(let name of Object.keys(test)){
+        arr.push(_.shuffle(test[name].questions)[0]) 
+      }
+      this.test.questions.push(..._.shuffle(arr))
     },
     checkTest(){
       this.tableItems=[]

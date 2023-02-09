@@ -13,19 +13,19 @@ v-app
     v-list(dense nav)
 
       v-list-item-group( v-model="selectedItem" color="primary")  
-        v-list-item(link @click="setTitle()")
+        v-list-item(link @click="setTitle('main')")
           v-list-item-icon
             v-icon mdi-home  
           v-list-item-content  
             v-list-item-title Главная
 
-        v-list-item(link @click="randomTest()")
+        v-list-item(link @click="setTitle('test','Тест 1')")
           v-list-item-icon
             v-icon mdi-school
           v-list-item-content  
             v-list-item-title Тест 
           
-        v-list-item(v-for="item in menuItems" no-action :key="item.title" @click="setTitle(item.title)")
+        v-list-item(v-for="item in menuItems" no-action :key="item.title" @click="setTitle('text',item.title)")
           v-list-item-content
             v-list-item-title {{item.title}}
               
@@ -35,44 +35,55 @@ v-app
 
   v-main
     v-container(fluid)
-      v-card.mx-auto.card.mt-10(v-if="main" elevation="2")
+      v-card.mx-auto.card.mt-10(v-if="main == 'main'" elevation="2")
           v-card-title Главная страница
           v-card-subtitle Тут вы можете расписать всякое
           v-card-text тут просто текст   
+      TestView(v-else-if="main == 'test'" :title="title")    
       CardView(v-else :title="title")
+      
 
   v-footer(app)
 </template>
 
 <script>
-import menuItems from "./plugins/menu";
+import menuItems from "./plugins/menu"
 import CardView from "./components/CardView"
+import TestView from "./components/TestView"
 export default {
   name: "App",
-  
+
   components: {
     CardView,
+    TestView,
   },
 
-
   data: () => ({
-    selectedItem:0,
-    drawer:null,
-    main:true,
+    selectedItem: 0,
+    drawer: null,
+    main: "main",
     menuItems: menuItems,
-    title:""
+    title: "",
   }),
-  methods:{
-    setTitle(title){
-      if(title){
-      this.main = false
-      this.title = title
-      }else{
-        this.main = true
-      this.title =""
+  methods: {
+    setTitle(title,name) {
+      switch (title) {
+        case "main":
+          this.main = "main"
+          this.title = ""
+          break;
+        case "test":
+          this.main = "test"
+          this.title = name
+          console.log(123131);
+          break;
+        case "text":
+          this.main = "text"
+          this.title = name
+          break;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
