@@ -13,11 +13,11 @@ v-app
     v-list(dense nav)
 
       v-list-item-group( v-model="selectedItem" color="primary")  
-        v-list-item(link @click="setTitle('Home')")
+        v-list-item(link @click="setTitle()")
           v-list-item-icon
             v-icon mdi-home  
           v-list-item-content  
-            v-list-item-title Home
+            v-list-item-title Главная
           
         v-list-group(v-for="item in menuItems" no-action :key="item.title" :prepend-icon="item.action")
           template( v-slot:activator)
@@ -28,19 +28,13 @@ v-app
               v-list-item-title(v-text="item.title")     
 
 
-        //- v-list-group( :value="0"  no-action  sub-group )
-        //-   template( v-slot:activator)
-        //-     v-list-item-content
-        //-       v-list-item-title Midle
-
-          
-  
-
-  <!-- Sizes your content based upon application components -->
   v-main
-    <!-- Provides the application the proper gutter -->
     v-container(fluid)
-      CardView( :questions="title")
+      v-card.mx-auto.card.mt-10(v-if="main" elevation="2")
+          v-card-title Главная страница
+          v-card-subtitle Тут вы можете расписать всякое
+          v-card-text тут просто текст   
+      CardView(v-else :title="title")
 
   v-footer(app)
 </template>
@@ -59,13 +53,25 @@ export default {
   data: () => ({
     selectedItem:0,
     drawer:null,
+    main:true,
     menuItems: menuItems,
     title:""
   }),
   methods:{
     setTitle(title){
+      if(title){
+      this.main = false
       this.title = title
+      }else{
+        this.main = true
+      this.title =""
+      }
     }
   }
 };
 </script>
+<style scoped>
+.card {
+  width: 700px;
+}
+</style>
