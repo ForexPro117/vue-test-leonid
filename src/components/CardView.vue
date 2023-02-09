@@ -2,10 +2,10 @@
   div()
     //- div {{test}}
     //- div {{sca}}
-    v-card.mx-auto.card.mt-10(elevation="2")
-        v-card-title {{test.main.title}}
-        v-card-subtitle {{test.main.subtitle}}
-        v-card-text {{test.main.text}}
+    v-card.mx-auto.card.mt-10(v-for="card in test.main" elevation="2")
+        v-card-title {{card.title}}
+        v-card-subtitle {{card.subtitle}}
+        v-card-text {{card.text}}
     v-lazy(v-for="(q,i) in this.test.questions", :key="q.text" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
       v-card.mx-auto.card.mt-10(elevation="2")
         v-card-title Задание №{{i+1}}
