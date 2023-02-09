@@ -1,6 +1,5 @@
 const menuItems = [
     {
-        action: 'mdi-school',
         items: [
             { title: 'Тест 1' },
             { title: 'Тест 2' },
@@ -9,7 +8,6 @@ const menuItems = [
         title: 'Тесты',
     },
     {
-        action: 'mdi-silverware-fork-knife',
         items: [
             { title: 'test' },
             { title: 'New American' },

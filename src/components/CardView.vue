@@ -6,21 +6,26 @@
         v-card-title {{test.main.title}}
         v-card-subtitle {{test.main.subtitle}}
         v-card-text {{test.main.text}}
-    v-lazy(v-for="(q,i) in test.questions", :key="q.text" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
+    v-lazy(v-for="(q,i) in this.test.questions", :key="q.text" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
       v-card.mx-auto.card.mt-10(elevation="2")
         v-card-title Задание №{{i+1}}
         v-card-subtitle {{q.text}}
         //- v-card-text {{q.answer}}  
-
+        //- v-divider.mx-auto
         v-card-text(v-if="q.type == 'radio'")
-          v-radio-group(v-model="q.answer")
+          v-radio-group(v-model="q.answer" :disabled="isFinish")
             v-radio(v-for="(option,i) in q.options" :key="option.text" :label="option.text" :value="i" dense)
             
         v-card-text(v-else-if="q.type == 'checkbox'")
-          v-checkbox.my-0(v-for="(option,i) in q.options" :key="option.text" :label="option.text" :value="i" v-model="q.answer" dense)
+          v-checkbox.my-0(v-for="(option,i) in q.options" :key="option.text" :label="option.text" :value="i" v-model="q.answer" dense :disabled="isFinish")
 
         v-card-text(v-else-if="q.type == 'text'")
-          v-text-field(:label="'Введите ответ'" v-model="q.answer" )         
+          v-text-field(:label="'Введите ответ'" v-model="q.answer"  clearable :disabled="isFinish")
+    v-row.mt-16.mb-10(v-if="!isFinish" align="center")
+      v-btn.btn.mx-auto(@click="checkTest" color="primary" ) Завершить тест    
+    v-data-table.mt-16.mb-10.mx-auto.elevation-2.card(v-else="isFinish" :headers='headers' :items='tableItems'
+     :items-per-page="5" :footer-props="{itemsPerPageText: 'Элементов на странице', pageText: '{0}-{1} из {2}','items-per-page-all-text':'Все'}")  
+          
    
 
 </template>
@@ -37,30 +42,63 @@ export default {
 
   data: () => ({
     test:null,
-    arr:["a","b"],
-    arr2:["a","b"]
-  }),
-
-  computed:{
-    sca(){
-     return this.arr.length == this.arr2.length &&  !_.difference(this.arr,this.arr2).length
-      // return 'HNE'.toLowerCase().includes('hnE'.toLowerCase())
+    tableItems:[],
+    isFinish:false,
+    headers:[
+      {
+      text:'Номер теста',
+      sortable: false,
+      value:"name",
+    },
+    {
+      text:'Результат',
+      sortable: false,
+      value:"result"
     }
-  },
+    ]
+  }),
   created(){
     console.log("Created")
-    this.test = tests[this.title]
-    // console.log(tests[this.title])
+    this.randomQuest()
   },
   methods:{
-    checkTextAnswer(orig,text){
-      return orig + text
+    randomQuest(){
+      this.test = _.cloneDeep(tests[this.title])
+      this.test.questions = _.shuffle(this.test.questions)
+    },
+    checkTest(){
+      this.tableItems=[]
+      let i = 1;
+      for (let el of this.test.questions) {
+        let ans = false;
+        switch (el.type) {
+          case "checkbox":
+            ans = this.compareArr(el.answer, el.rightAnswer)
+            break;
+          case "radio":
+            ans = el.answer == el.rightAnswer
+            break;
+          case "text":
+            ans = this.compareText(el.answer, el.rightAnswer)
+            break;
+        }
+        this.tableItems.push({name:'Задание '+i++,result:ans ? "Верно":"Неверный ответ"})
+      }
+      this.isFinish = true
+    },
+     compareArr(arr,arr2){
+      return arr.length == arr2.length &&  !_.difference(arr,arr2).length 
+    },
+    compareText(text,text2){
+      return text.toLowerCase().includes(text2.toLowerCase())
     }
   },
   watch:{
     title(){
       console.log("Changed")
-      this.test = tests[this.title]
+      this.randomQuest()
+      this.tableItems=[]
+      this.isFinish = false
     }
   }
 };

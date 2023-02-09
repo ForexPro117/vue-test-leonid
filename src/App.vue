@@ -19,7 +19,7 @@ v-app
           v-list-item-content  
             v-list-item-title Главная
           
-        v-list-group(v-for="item in menuItems" no-action :key="item.title" :prepend-icon="item.action")
+        v-list-group(v-for="item in menuItems" no-action :key="item.title")
           template( v-slot:activator)
               v-list-item-content
                 v-list-item-title {{item.title}}
