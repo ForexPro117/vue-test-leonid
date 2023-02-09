@@ -18,14 +18,19 @@ v-app
             v-icon mdi-home  
           v-list-item-content  
             v-list-item-title Главная
+
+        v-list-item(link @click="randomTest()")
+          v-list-item-icon
+            v-icon mdi-school
+          v-list-item-content  
+            v-list-item-title Тест 
           
-        v-list-group(v-for="item in menuItems" no-action :key="item.title")
-          template( v-slot:activator)
-              v-list-item-content
-                v-list-item-title {{item.title}}
+        v-list-item(v-for="item in menuItems" no-action :key="item.title" @click="setTitle(item.title)")
+          v-list-item-content
+            v-list-item-title {{item.title}}
               
-          v-list-item( v-for="(item, i) in item.items" :key="i" link @click="setTitle(item.title)")
-              v-list-item-title(v-text="item.title")     
+          //- v-list-item( v-for="(item, i) in item.items" :key="i" link @click="setTitle(item.title)")
+          //-     v-list-item-title(v-text="item.title")     
 
 
   v-main
