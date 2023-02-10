@@ -4,8 +4,8 @@
         v-card-title {{card.title}}
         v-card-subtitle {{card.subtitle}}
         v-card-text {{card.text}}
-        v-img(:src="card.image" contain)
-    v-lazy(v-for="(q,i) in this.test.questions", :key="q.text" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
+        v-img(v-if="card.image" :src="card.image" contain)
+    v-lazy(v-for="(q,i) in test.questions", :key="q.text" :options="{ threshold: .9 }" min-height="50" transition="fade-transition" )
       v-card.mx-auto.card.mt-10(elevation="2")
         v-card-title Задание №{{i+1}}
         v-card-subtitle {{q.text}}

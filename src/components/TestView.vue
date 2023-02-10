@@ -25,7 +25,7 @@
         v-expand-transition
           div(v-show="q.show")
             v-divider
-            v-card-text {{q.explanation}}
+            v-card-text {{showExpl(q)}}
     v-row.mt-16.mb-10(v-if="!isFinish" align="center")
       v-btn.btn.mx-auto(@click="checkTest" color="primary" ) Завершить тест    
     v-data-table.mt-16.mb-10.mx-auto.elevation-2.card(v-else="isFinish" :headers='headers' :items='tableItems'
@@ -67,6 +67,10 @@ export default {
     this.randomQuest()
   },
   methods:{
+    showExpl(q){
+      if(q.explanation) return q.explanation
+      return "Верный ответ: "+this.answerToString(q)
+    },
     randomQuest(){
       this.test.questions = []
       let test = _.cloneDeep(tests)
@@ -75,6 +79,23 @@ export default {
         arr.push(_.shuffle(test[name].questions)[0]) 
       }
       this.test.questions.push(..._.shuffle(arr))
+    },
+
+    answerToString(el){
+      let ans = null
+      if(!el?.rightAnswer) return ""
+      switch (el.type) {
+        case "checkbox":
+          ans = el.rightAnswer.map((num)=>num+1)
+          break;
+        case "radio":
+          ans = (el.rightAnswer+1) 
+          break;
+        case "text":
+          ans = el.rightAnswer
+          break;
+      }
+      return ans.toString()
     },
     checkTest(){
       this.tableItems=[]
@@ -100,6 +121,7 @@ export default {
       return arr.length == arr2.length &&  !_.difference(arr,arr2).length 
     },
     compareText(text,text2){
+      if(!text) text = ""
       return text.toLowerCase().includes(text2.toLowerCase())
     },
     refresh(){
