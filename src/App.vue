@@ -36,9 +36,9 @@ v-app
   v-main
     v-container(fluid)
       v-card.mx-auto.card.mt-10(v-if="main == 'main'" elevation="2")
-          v-card-title Главная страница
-          v-card-subtitle Тут вы можете расписать всякое
-          v-card-text тут просто текст   
+          v-card-title Огэ по информатике
+          v-card-subtitle Тут вы можете подгодовиться к ОГЭ
+          v-card-text На сайте представлено 10 тем (заданий) которые встретяться вам на ОГЭ по информатике, а также возможность пройти тест с случайным набором из этих 10 заданий.   
       TestView(v-else-if="main == 'test'" :title="title" ref="test")    
       CardView(v-else :title="title")
       
